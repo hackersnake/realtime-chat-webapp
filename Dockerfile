@@ -1,14 +1,14 @@
-# Use a lightweight JDK image
-FROM openjdk:17-jdk-slim
+# Start from a base image with JDK and Maven pre-installed
+FROM maven:3.9.6-eclipse-temurin-17
 
 # Set working directory
 WORKDIR /app
 
-# Copy everything to the image
+# Copy source code
 COPY . .
 
-# Build the application
-RUN chmod +x mvnw && ./mvnw clean package -DskipTests
+# Build the project (skip tests to save time)
+RUN mvn clean package -DskipTests
 
-# Run the JAR file
-CMD ["java", "-jar", "target/*.jar"]
+# Run the jar
+CMD ["sh", "-c", "java -jar target/*.jar"]
